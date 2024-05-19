@@ -1,0 +1,95 @@
+class Solution {
+public:
+    vector<vector<int>>res;
+    void pacificRim(vector<vector<int>>&heights,int i,int j, vector<vector<int>>&grid)
+    {
+        int R = heights.size();
+        int C = heights[0].size();
+
+        if(grid[i][j] == 1)
+        {
+            return;
+        }
+        grid[i][j] = 1;
+
+        int directionRow[4] ={-1,1,0,0};
+        int directionCol[4] = {0,0,-1,1};
+
+        for(int k=0;k<4;k++)
+        {
+            int rr = i+directionRow[k];
+            int cc = j + directionCol[k];
+
+            if(rr >= 0 && cc >= 0 && rr < R && cc < C && heights[rr][cc] >= heights[i][j])
+            {
+                pacificRim(heights,rr,cc,grid);
+            }
+        }
+
+    }
+    void atlanticRim(vector<vector<int>>&heights,int r,int c,vector<vector<int>>&grid)
+    {
+        int R = heights.size();
+        int C = heights[0].size();
+       
+        if(grid[r][c] == 1)
+        {
+            res.push_back({r,c});
+        }
+        if(grid[r][c] == 2)
+        {
+            return;
+        }
+        grid[r][c] = 2;
+
+        int directionRow[4] ={-1,1,0,0};
+        int directionCol[4] = {0,0,-1,1};
+
+        for(int k=0;k<4;k++)
+        {
+            int rr = r+directionRow[k];
+            int cc = c + directionCol[k];
+
+            if(rr >= 0 && cc >= 0 && rr < R && cc < C && heights[rr][cc] >= heights[r][c])
+            {
+                atlanticRim(heights,rr,cc,grid);
+            }
+        }
+
+    }
+
+    vector<vector<int>> pacificAtlantic(vector<vector<int>>& heights) {
+        int R = heights.size();
+        cout<<R;
+        if(R==0)
+            return res;
+        int C = heights[0].size();
+        cout<<C<<endl;
+
+        vector<vector<int>>grid(R,vector<int>(C,0));
+        for(int i=0;i<R;i++)
+        {
+            
+            for(int j=0;j<C;j++)
+            {
+                cout<<heights[i][j]<<" ";
+                if(i==0 || j==0)
+                {
+                    pacificRim(heights,i,j,grid);
+                }
+            }
+            cout<<"\n";
+        }
+         for(int i=0;i<R;i++)
+        {
+            for(int j=0;j<C;j++)
+            {
+                if(i==R-1 || j==C-1)
+                {
+                    atlanticRim(heights,i,j,grid);
+                }
+            }
+        }
+        return res;
+    }
+};
