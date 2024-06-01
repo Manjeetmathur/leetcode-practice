@@ -1,0 +1,74 @@
+class Solution {
+public:
+    // #define dpsolver ios_base :: sync_with_stdio(0),cin.tie(0),cout.tie(0);
+    // map<char, vector<char>> mp={
+    //     {'2',{'a','b','c'}},
+    //     {'3',{'d','e','f'}},
+    //       {'4',{'g','h','i'}},
+    //     {'5',{'j','k','l'}},
+    //       {'6',{'m','n','o'}},
+    //     {'7',{'p','q','r','s'}},
+    //       {'8',{'t','u','v'}},
+    //     {'9',{'w','x','y','z'}}};
+
+    // void back(int i,string digit , string s,vector<string> &ans)
+    // {
+    //     if(i==digit.length())
+    //     {
+    //         if(s.length())
+    //             ans.push_back(s);
+    //         return ;
+    //     }
+    //     for(auto chr : mp[digit[i]])
+    //         back(i+1,digit,s+chr,ans);
+    // }
+
+    // vector<string> letterCombinations(string digit) {
+    //    dpsolver;
+    //    digit.erase(remove(digit.begin(),digit.end(),'1'),digit.end());
+    //    vector<string> ans;
+    //    back(0,digit,"",ans);
+    //     return ans;
+    vector<string>result;
+    vector<string> letterCombinations(string digit) {
+        if(digit.length() == 0)
+        {
+            return {};
+        }
+        unordered_map<char,string>mp;
+        mp['2'] = "abc";
+        mp['3'] = "def";
+        mp['4'] = "ghi";
+        mp['5'] = "jkl";
+        mp['6'] = "mno";
+        mp['7'] = "pqrs";
+        mp['8'] = "tuv";
+        mp['9'] = "wxyz";
+
+        string temp = "";
+
+        solve(0,digit,temp,mp);
+
+        return result;
+        
+    }
+
+    void solve(int idx,string &digit,string &temp,unordered_map<char,string>&mp)
+    {
+        if(idx >= digit.length())
+        {
+            result.push_back(temp);
+            return;
+        }
+        char ch=digit[idx];
+        string str = mp[ch];
+
+        for(int i=0;i<str.length();i++)
+        {
+            temp.push_back(str[i]);
+            solve(idx+1,digit,temp,mp);
+            temp.pop_back();
+        }
+         
+    }
+};
