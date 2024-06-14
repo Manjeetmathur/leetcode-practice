@@ -1,0 +1,55 @@
+class Solution {
+public:
+    vector<int> findRedundantConnection(vector<vector<int>>& edges) {
+        int n= edges.size();
+        vector<int> ds(n+1);
+
+        vector<int>rank(n+1);
+
+        for(int i=0;i <= n;i++)
+        {
+            ds[i] = i;
+            rank[i] = 1;
+        }
+        for( vector<int> &v : edges){
+            int el1 = v[0];
+            int el2 = v[1];
+
+            int p1 = findparent(el1,ds);
+            int p2 = findparent(el2,ds);
+
+
+
+            if(p1 == p2){
+                return v;
+            }
+
+            else{
+                if(rank[p1] < rank[p2]){
+                    ds[p1]=p2;
+                }
+                else if(rank[p2] < rank[p1])
+                {
+                    ds[p2]=p1;
+                }
+                else{
+                    ds[p1]=p2;
+                    rank[p2]++;
+                }
+            }
+
+
+            // else{
+            //     ds[p2] = p1;
+            // }
+        }
+        return {};
+    }
+
+    int findparent(int ele,vector<int> &ds){
+        if(ds[ele] == ele) return ele;
+
+        return findparent(ds[ele],ds);
+    }
+
+};
