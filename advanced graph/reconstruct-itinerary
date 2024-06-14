@@ -1,0 +1,53 @@
+class Solution {
+public:
+    unordered_map<string,vector<string>>adj;
+    vector<string>result;
+    int numTicket =0;
+
+    bool dfs(string  fromAirport, vector<string> &path){
+        path.push_back(fromAirport);
+
+        if(path.size() == numTicket+1){
+            result = path;
+            return true;
+        }
+
+        vector<string>& neighbour = adj[fromAirport];
+
+        for(int i=0; i < neighbour.size() ; i++)
+        {
+            string toAirport = neighbour[i];
+            neighbour.erase(neighbour.begin()+i);
+
+            if(dfs(toAirport,path) == true) 
+                return true;
+
+            neighbour.insert(neighbour.begin()+i,toAirport);
+
+        }
+        path.pop_back();
+        return false;
+    }
+
+    vector<string> findItinerary(vector<vector<string>>& tickets) {
+        numTicket = tickets.size();
+
+        for(auto &t : tickets){
+            string u =t[0];
+            string v = t[1];
+
+            adj[u].push_back(v);
+
+        }
+
+        for(auto &edges : adj){
+            sort(begin(edges.second) ,end(edges.second));
+        }
+
+        vector<string>path;
+
+      bool DFS=  dfs("JFK",path);
+
+        return result;
+    }
+};
